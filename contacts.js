@@ -1,11 +1,12 @@
-import { promises as fs } from "fs";
+// import { promises as fs } from "fs";
+import { readFile, writeFile, readdir } from "node:fs/promises";
 import path from "path";
 
-const contactsPath = path.resolve("./db/contacts.json");
+const contactsPath = path.resolve("db", "contacts.json");
 
 const fetchContacts = async () => {
   try {
-    const contacts = await fs.readFile(contactsPath);
+    const contacts = await readFile(contactsPath);
     return JSON.parse(contacts);
   } catch (error) {
     console.log(error.message);
@@ -15,13 +16,13 @@ const fetchContacts = async () => {
 const writeContactsData = async (contacts) => {
   try {
     const stringifyContacts = JSON.stringify(contacts);
-    await fs.writeFile(contactsPath, stringifyContacts);
+    await writeFile(contactsPath, stringifyContacts);
   } catch (error) {
     console.log(error.message);
   }
 };
 
-const listContacts = async () => {
+export const listContacts = async () => {
   try {
     const contacts = await fetchContacts();
     console.table(contacts);
@@ -31,20 +32,21 @@ const listContacts = async () => {
   }
 };
 
-const getContactById = async (contactId) => {
+export const getContactById = async (contactId) => {
   try {
     const contacts = await fetchContacts();
-    const contact = contacts.find((contact) => contact.id === contact);
-    if (!contact) {
+    const item = contacts.find((contact) => contact.id === contactId);
+    if (!item) {
       console.log("This contact doesn't exist");
-      return;
+      return; // Exit the function here
     }
+    console.log("Found contact:", item);
   } catch (error) {
     console.log(error.message);
   }
 };
 
-const removeContact = async (contactId) => {
+export const removeContact = async (contactId) => {
   try {
     const contacts = await fetchContacts();
     const filteredContacts = contacts.filter(
@@ -57,7 +59,7 @@ const removeContact = async (contactId) => {
   }
 };
 
-const addContact = async (name, email, phone) => {
+export const addContact = async (name, email, phone) => {
   try {
     const contacts = await fetchContacts();
     const newContact = { id: `${contacts.length + 1}`, name, email, phone };
@@ -69,4 +71,4 @@ const addContact = async (name, email, phone) => {
   }
 };
 
-module.exports = { listContacts, getContactById, removeContact, addContact };
+// module.exports = { listContacts, getContactById, removeContact, addContact };

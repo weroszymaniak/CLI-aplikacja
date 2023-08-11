@@ -1,11 +1,12 @@
+import { Command } from "commander";
+
 import {
   listContacts,
   getContactById,
   removeContact,
   addContact,
-} from "./contacts";
+} from "./contacts.js";
 
-const { Command } = require("commander");
 const program = new Command();
 program
   .option("-a, --action <type>", "choose action")
@@ -17,6 +18,7 @@ program
 program.parse(process.argv);
 
 const argv = program.opts();
+
 function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
@@ -32,7 +34,7 @@ function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
-      removeContact(contactId);
+      removeContact(id);
       break;
 
     default:

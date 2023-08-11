@@ -1,5 +1,4 @@
-// import { promises as fs } from "fs";
-import { readFile, writeFile, readdir } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "path";
 
 const contactsPath = path.resolve("db", "contacts.json");
@@ -38,7 +37,7 @@ export const getContactById = async (contactId) => {
     const item = contacts.find((contact) => contact.id === contactId);
     if (!item) {
       console.log("This contact doesn't exist");
-      return; // Exit the function here
+      return;
     }
     console.log("Found contact:", item);
   } catch (error) {
@@ -70,5 +69,3 @@ export const addContact = async (name, email, phone) => {
     console.log(error.message);
   }
 };
-
-// module.exports = { listContacts, getContactById, removeContact, addContact };
